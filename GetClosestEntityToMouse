@@ -1,35 +1,40 @@
 local negro = {}
+
 function negro.Get()
-	local closest = nil
-	local shortestDistance = math.huge
-	local mouse = game.Players.LocalPlayer:GetMouse()
+    local closest = nil
+    local shortestDistance = math.huge
+    local mouse = game.Players.LocalPlayer:GetMouse()
+    local camera = game.Workspace.CurrentCamera  -- Define the camera reference
 
-	-- Ensure workspace.Alive exists
-	if not workspace:FindFirstChild("Alive") then
-		return nil
-	end
+    -- Ensure workspace.Alive exists
+    if not workspace:FindFirstChild("Alive") then
+        warn("No 'Alive' folder found in the workspace.")
+        return nil
+    end
 
-	-- Loop through all entities
-	for _, entity in pairs(workspace.Alive:GetChildren()) do
-		if entity:IsA("Model") then
-			local humanoidRootPart = entity:FindFirstChild("HumanoidRootPart")
-			if humanoidRootPart then
-				-- Convert world position to screen position
-				local screenPoint = camera:WorldToViewportPoint(humanoidRootPart.Position)
-				local distanceToMouse = (Vector2.new(screenPoint.X, screenPoint.Y) - Vector2.new(mouse.X, mouse.Y)).Magnitude
-				-- Check if this is the closest entity so far
-				if distanceToMouse < shortestDistance then
-					closest = entity
-					shortestDistance = distanceToMouse
-				end
-			else				
-			end
-		else	
-		end
-	end
-	if not closest then		
-	else		
-	end
-	return closest
+    -- Loop through all entities
+    for _, entity in pairs(workspace.Alive:GetChildren()) do
+        if entity:IsA("Model") then
+            local humanoidRootPart = entity:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                -- Convert world position to screen position
+                local screenPoint = camera:WorldToViewportPoint(humanoidRootPart.Position)
+                local distanceToMouse = (Vector2.new(screenPoint.X, screenPoint.Y) - Vector2.new(mouse.X, mouse.Y)).Magnitude
+                
+                -- Check if this is the closest entity so far
+                if distanceToMouse < shortestDistance then
+                    closest = entity
+                    shortestDistance = distanceToMouse
+                end
+            end
+        end
+    end
+
+    if not closest then
+        warn("No closest entity found.")
+    end
+    
+    return closest
 end
+
 return negro
