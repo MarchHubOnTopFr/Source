@@ -1,6 +1,5 @@
-return function()
-local MauaulSpam -- Declare MauaulSpam globally
 local manul = {}
+local MauaulSpam
 function manul.ManualSpam()
     -- Gui to Lua
     -- Version: 3.2
@@ -379,6 +378,6 @@ local function WWJM_fake_script() -- Main.LocalScript
 	
 end
 coroutine.wrap(WWJM_fake_script)()
+end
 
-end
-end
+return manul
