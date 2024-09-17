@@ -1,57 +1,62 @@
-local negro = {}
+    local negro = {}
 
-function negro.Get()
-    local closest = nil
-    local shortestDistance = math.huge
+    -- Store the last closest entity found
+    negro.lastClosest = nil
 
-    -- Get references to the player and camera
-    local player = game.Players.LocalPlayer
-    if not player then
-        warn("LocalPlayer not found. Ensure this script runs in a LocalScript.")
-        return nil
-    end
+    function negro.Get()
+        local closest = nil
+        local shortestDistance = math.huge
 
-    local mouse = player:GetMouse()
-    local camera = game.Workspace.CurrentCamera
+        -- Get references to the player and camera
+        local player = game.Players.LocalPlayer
+        if not player then
+            warn("LocalPlayer not found. Ensure this script runs in a LocalScript.")
+            return nil
+        end
 
-    -- Ensure workspace.Alive exists
-    local aliveFolder = workspace:FindFirstChild("Alive")
-    if not aliveFolder then
-        -- Warn only once if "Alive" is not found
-        warn("No 'Alive' folder found in the workspace.")
-        return nil
-    end
+        local mouse = player:GetMouse()
+        local camera = game.Workspace.CurrentCamera
+        if not camera then
+            warn("CurrentCamera not found in the workspace.")
+            return nil
+        end
 
-    -- Loop through all entities in the 'Alive' folder
-    for _, entity in pairs(aliveFolder:GetChildren()) do
-        if entity:IsA("Model") then
-            local humanoidRootPart = entity:FindFirstChild("HumanoidRootPart")
-            if humanoidRootPart then
-                -- Convert world position to screen position
-                local screenPoint = camera:WorldToViewportPoint(humanoidRootPart.Position)
-                local distanceToMouse = (Vector2.new(screenPoint.X, screenPoint.Y) - Vector2.new(mouse.X, mouse.Y)).Magnitude
-                
-                -- Check if this is the closest entity so far
-                if distanceToMouse < shortestDistance then
-                    closest = entity
-                    shortestDistance = distanceToMouse
+        -- Ensure workspace.Alive exists
+        local aliveFolder = workspace:FindFirstChild("Alive")
+        if not aliveFolder then
+            warn("No 'Alive' folder found in the workspace.")
+            return nil
+        end
+
+        -- Loop through all entities in the 'Alive' folder
+        for _, entity in pairs(aliveFolder:GetChildren()) do
+            if entity:IsA("Model") then
+                local humanoidRootPart = entity:FindFirstChild("HumanoidRootPart")
+                if humanoidRootPart then
+                    -- Convert world position to screen position
+                    local screenPoint = camera:WorldToViewportPoint(humanoidRootPart.Position)
+                    local distanceToMouse = (Vector2.new(screenPoint.X, screenPoint.Y) - Vector2.new(mouse.X, mouse.Y)).Magnitude
+                    
+                    -- Check if this is the closest entity so far
+                    if distanceToMouse < shortestDistance then
+                        closest = entity
+                        shortestDistance = distanceToMouse
+                    end
+                else
+                    warn("Entity found without a HumanoidRootPart: " .. entity.Name)
                 end
             end
         end
-    end
 
-    -- Optionally, remove or comment out this warning to reduce lag
-    if not closest then
-        -- Log only if the previous closest was not nil (state changed)
-        if negro.lastClosest ~= nil then
+        -- Log a warning only if the closest state has changed to nil
+        if not closest and negro.lastClosest ~= nil then
             warn("No closest entity found.")
         end
+
+        -- Store the last closest entity found
+        negro.lastClosest = closest
+
+        return closest
     end
-    
-    -- Store the last closest entity found
-    negro.lastClosest = closest
 
-    return closest
-end
-
-return negro
+    return negro
