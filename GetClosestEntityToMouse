@@ -3,17 +3,27 @@ local negro = {}
 function negro.Get()
     local closest = nil
     local shortestDistance = math.huge
-    local mouse = game.Players.LocalPlayer:GetMouse()
-    local camera = game.Workspace.CurrentCamera  -- Define the camera reference
+
+    -- Get references to the player and camera
+    local player = game.Players.LocalPlayer
+    if not player then
+        warn("LocalPlayer not found. Ensure this script runs in a LocalScript.")
+        return nil
+    end
+
+    local mouse = player:GetMouse()
+    local camera = game.Workspace.CurrentCamera
 
     -- Ensure workspace.Alive exists
-    if not workspace:FindFirstChild("Alive") then
+    local aliveFolder = workspace:FindFirstChild("Alive")
+    if not aliveFolder then
+        -- Warn only once if "Alive" is not found
         warn("No 'Alive' folder found in the workspace.")
         return nil
     end
 
-    -- Loop through all entities
-    for _, entity in pairs(workspace.Alive:GetChildren()) do
+    -- Loop through all entities in the 'Alive' folder
+    for _, entity in pairs(aliveFolder:GetChildren()) do
         if entity:IsA("Model") then
             local humanoidRootPart = entity:FindFirstChild("HumanoidRootPart")
             if humanoidRootPart then
@@ -30,10 +40,17 @@ function negro.Get()
         end
     end
 
+    -- Optionally, remove or comment out this warning to reduce lag
     if not closest then
-        warn("No closest entity found.")
+        -- Log only if the previous closest was not nil (state changed)
+        if negro.lastClosest ~= nil then
+            warn("No closest entity found.")
+        end
     end
     
+    -- Store the last closest entity found
+    negro.lastClosest = closest
+
     return closest
 end
 
