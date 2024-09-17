@@ -1,4 +1,6 @@
+local RunService = game:GetService("RunService")  -- Ensure RunService is referenced
 local ConnectionManager = {}
+local connections = {}  -- Use a local table to store connections instead of _G
 
 function ConnectionManager.safeDisconnect(connection)
     if connection and connection.Disconnect then
@@ -8,13 +10,14 @@ end
 
 function ConnectionManager.manageConnection(flag, varName, runServiceFunc)
     if flag then
-        if not _G[varName] then
-            _G[varName] = RunService[runServiceFunc]:Connect(function()
+        if not connections[varName] then
+            connections[varName] = RunService[runServiceFunc]:Connect(function()
+                -- Add debug statement or functionality here if needed
             end)
         end
     else
-        ConnectionManager.safeDisconnect(_G[varName])
-        _G[varName] = nil
+        ConnectionManager.safeDisconnect(connections[varName])
+        connections[varName] = nil
     end
 end
 
