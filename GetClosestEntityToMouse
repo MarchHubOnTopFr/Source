@@ -1,5 +1,5 @@
 local negro = {}
-function negro.Negro()
+function negro.Nigre()
 	local closest = nil
 	local shortestDistance = math.huge
 	local mouse = game.Players.LocalPlayer:GetMouse()
