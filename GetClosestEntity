@@ -1,0 +1,18 @@
+local closeste = {}
+function closeste.ClosestThing(Object)
+	task.spawn(function()
+		local closest
+		local max_distance = math.huge
+		for index, entity in workspace.Alive:GetChildren() do
+			if entity.Name ~= Players.LocalPlayer.Name then
+				local distance = (Object.Position - entity.HumanoidRootPart.Position).Magnitude
+				if distance < max_distance then
+					closest_Entity = entity
+					max_distance = distance
+				end
+			end
+		end
+		return closest_Entity
+	end)
+end
+return closeste
