@@ -381,3 +381,4 @@ coroutine.wrap(WWJM_fake_script)()
 end
 
 return manul
+return MauaulSpam
