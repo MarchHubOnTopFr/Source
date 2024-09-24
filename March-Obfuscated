@@ -1,7 +1,7 @@
 --// • MAIN DETAILS • \\ --
 
 --// • Owner: I Love Femboys (@deleteduser938745)
---// • Obfuscated: Yes
+--// • Obfuscated: Yes (March Fuscator)
 --// • Version: 0.2 (Beta)
 --// • Libraries & Modules: 6
 --// • Developement Speed: Very Slow
@@ -11,4 +11,4 @@
 --// • Average Load Time: 0 - 5 Seconds
 --// • Average System Downtimes: N/A
 
---// • Notes: Please Refrain From Skidding This Script Is Protected With Moonsec V3 And March Fuscator
+loadstring(game:HttpGet("https://paste.gg/p/anonymous/e58fe2105ceb4f08a5f9c7e5cec7a6f5/files/42c7f059cbac47f383c629ea297c1825/raw"))()
